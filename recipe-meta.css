@@ -1,0 +1,1 @@
+.recipe-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}.recipe-meta span{border:1px solid #e1e6d9;border-radius:14px;padding:4px 7px;color:#536454;font-size:9px;line-height:1.1;background:#fbfcf8}.recipe-dialog .recipe-meta{margin:16px 0}.recipe-dialog .recipe-meta span{font-size:10px;padding:6px 9px}@media(max-width:380px){.recipe-meta span{font-size:8px}}

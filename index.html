@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1d4336" />
+    <title>Matchly — deine tägliche Matcha-Inspiration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:opsz,wght@5..1200,500;5..1200,600;5..1200,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="recipe.css?v=2" />
+    <link rel="stylesheet" href="ranking.css" />
+    <link rel="stylesheet" href="responsive.css" />
+    <link rel="stylesheet" href="recipe-meta.css" />
+    <link rel="stylesheet" href="dialog-layout.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="Matchly Startseite"><span class="brand-mark">m</span>matchly</a>
+      <nav aria-label="Hauptnavigation"><a href="#rezepte">Rezepte</a><a href="#kategorien">Kategorien</a><a href="#ueber-uns">Über Matchly</a></nav>
+      <button class="saved-button" id="savedButton" aria-label="Gespeicherte Rezepte öffnen"><span>♡</span><small id="savedCount">0</small></button>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">MATCHA, NEU GEDACHT</p>
+          <h1>Ein kleiner Moment<br />voller <em>Grün.</em></h1>
+          <p class="intro">Entdecke besondere Matcha-Rezepte für ruhige Morgen, kreative Pausen und jeden Genussmoment dazwischen.</p>
+          <a class="primary-link" href="#rezepte">Rezepte entdecken <span>→</span></a>
+          <div class="trust"><span class="avatars"><i></i><i></i><i></i></span><span>Von einer wachsenden Matcha-Community geliebt</span></div>
+        </div>
+        <div class="hero-art" role="img" aria-label="Illustration eines cremigen Iced Matcha Latte">
+          <div class="sun"></div><div class="leaf leaf-one"></div><div class="leaf leaf-two"></div><div class="shadow"></div>
+          <div class="glass"><div class="foam"></div><div class="ice ice-one"></div><div class="ice ice-two"></div><div class="drink"></div><div class="straw"></div></div>
+          <p class="art-caption">made with calm<br />&amp; ceremony</p>
+        </div>
+      </section>
+
+      <section class="category-section" id="kategorien">
+        <div class="section-heading"><p class="eyebrow">FINDE DEINEN FAVORITEN</p><h2>Matcha für jede Stimmung.</h2></div>
+        <div class="categories">
+          <a class="category active" href="category.html?category=Alle"><span class="icon warm">☕</span>Alle Rezepte</a>
+          <a class="category" href="category.html?category=Iced"><span class="icon green">❋</span>Iced &amp; Fresh</a>
+          <a class="category" href="category.html?category=Cremig"><span class="icon pink">✦</span>Cremig &amp; Sweet</a>
+          <a class="category" href="category.html?category=Fruchtig"><span class="icon orange">◐</span>Fruchtig</a>
+          <a class="category" href="category.html?category=Wellness"><span class="icon lavender">⌁</span>Wellness</a>
+        </div>
+      </section>
+
+      <section class="recipes-section" id="rezepte">
+        <div class="recipes-top"><div><p class="eyebrow">FRISCH FÜR DICH</p><h2>Unsere Lieblingsrezepte</h2></div><label class="search"><span>⌕</span><input id="search" type="search" placeholder="Rezepte suchen" /></label></div>
+        <div class="recipe-grid" id="recipeGrid"></div>
+        <p class="empty" id="emptyState" hidden>Kein Rezept gefunden. Versuch es mit einem anderen Suchbegriff.</p>
+      </section>
+      <section class="ranking-section" aria-labelledby="rankingTitle"><div><p class="eyebrow">COMMUNITY FAVORITEN</p><h2 id="rankingTitle">Diese Woche<br /><em>am beliebtesten.</em></h2><p>Die meistgespeicherten Matchly-Rezepte – frisch aus der Community.</p></div><ol class="ranking-list" id="rankingList"></ol></section>
+
+      <section class="newsletter" id="ueber-uns"><div><p class="eyebrow">MATCHLY LETTER</p><h2>Ein bisschen Grün<br />für deine Inbox.</h2></div><div><p>Neue Rezepte, saisonale Ideen und unsere liebsten Matcha-Momente – einmal im Monat.</p><form id="newsletterForm"><input aria-label="E-Mail-Adresse" type="email" placeholder="deine@email.de" required /><button>→</button></form><small id="newsletterMessage">Keine Sorge, wir mögen Spam genauso wenig wie du.</small></div></section>
+    </main>
+    <footer><a class="brand" href="#home"><span class="brand-mark">m</span>matchly</a><span>© 2026 Matchly · made for slow moments</span><div><a href="#">Instagram</a><a href="#">Pinterest</a></div></footer>
+    <dialog id="savedDialog"><button class="close" id="closeDialog" aria-label="Schließen">×</button><p class="eyebrow">DEINE SAMMLUNG</p><h2>Gespeicherte Rezepte</h2><div id="savedList"></div></dialog>
+    <dialog id="recipeDialog" class="recipe-dialog"><button class="close" id="closeRecipeDialog" aria-label="Schließen">×</button><div id="recipeDetail"></div></dialog>
+    <script src="app.js?v=3"></script>
+  </body>
+</html>
