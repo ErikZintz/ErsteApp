@@ -82,6 +82,18 @@ const toggleSaved = (id) => {
   localStorage.setItem("matchly-saved", JSON.stringify(next));
   return next;
 };
+const getRating = (id) => Number(JSON.parse(localStorage.getItem("matchly-ratings") || "{}")[id] || 0);
+const setRating = (id, val) => {
+  const all = JSON.parse(localStorage.getItem("matchly-ratings") || "{}");
+  all[id] = val;
+  localStorage.setItem("matchly-ratings", JSON.stringify(all));
+  return val;
+};
+const ratingStarsHTML = (r) => {
+  const current = getRating(r.id);
+  const stars = [1, 2, 3, 4, 5].map((n) => `<button class="rating-star${n <= current ? " is-active" : ""}" type="button" data-recipe-id="${r.id}" data-rating="${n}" aria-label="${n} von 5 Sternen" aria-pressed="${n <= current}">${n <= current ? "★" : "☆"}</button>`).join("");
+  return `<div class="detail-rating"><div class="rating-copy"><strong>Deine Bewertung</strong><small id="ratingValue">${current ? current + " von 5 Sternen" : "Noch nicht bewertet"}</small></div><div class="rating-stars" role="radiogroup" aria-label="Deine Bewertung">${stars}</div></div>`;
+};
 const checkedIngredients = (id) => (JSON.parse(localStorage.getItem("matchly-checked") || "{}")[id] || []);
 const toggleChecked = (id, idx) => {
   const all = JSON.parse(localStorage.getItem("matchly-checked") || "{}");
@@ -115,7 +127,7 @@ const recipeDetailHTML = (r) => {
   const steps = r.draft ? draftSteps(r, meta) : r.steps;
   const checked = checkedIngredients(r.id);
   const stepsChecked = checkedSteps(r.id);
-  return `<div class="detail-hero ${r.color}"><span>${r.emoji}</span></div><div class="detail-body"><div class="detail-top"><div><p class="eyebrow">${r.category.toUpperCase()}${r.draft ? " · REZEPTENTWURF" : ""}</p><h2>${r.title}</h2></div><div class="detail-actions"><button class="detail-share" data-recipe-id="${r.id}" aria-label="${r.title} teilen">↗</button><button class="detail-heart ${isSaved ? "is-saved" : ""}" data-id="${r.id}" aria-label="${r.title} speichern">${isSaved ? "♥" : "♡"}</button></div></div><p class="detail-description">${description}</p>${detailMetaHTML(r)}${tagsHTML}<div class="detail-grid"><section><h3>Zutaten <small>für ${r.servings || "1 Glas"}</small></h3><ul>${ingredients.map((ing, idx) => `<li class="check-item${checked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-check-idx="${idx}"${checked.includes(idx) ? " checked" : ""}><span>${ing}</span></label></li>`).join("")}</ul>${allergensHTML}</section><section><h3>Zubereitung <small class="step-progress">${stepsChecked.length}/${steps.length} Schritte</small></h3><ol>${steps.map((s, idx) => `<li class="step-item${stepsChecked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-step-idx="${idx}"${stepsChecked.includes(idx) ? " checked" : ""}><span>${s}</span></label></li>`).join("")}</ol></section></div>${similarHTML}<p class="allergy-note">${r.draft ? "Testentwurf: Mengen und Schritte vor der Veröffentlichung bitte selbst testen und gegebenenfalls anpassen." : "Hinweis: Prüfe bei pflanzlichen Drinks, Sirupen und Toppings immer die Zutatenliste, besonders bei Allergien."}</p></div>`;
+  return `<div class="detail-hero ${r.color}"><span>${r.emoji}</span></div><div class="detail-body"><div class="detail-top"><div><p class="eyebrow">${r.category.toUpperCase()}${r.draft ? " · REZEPTENTWURF" : ""}</p><h2>${r.title}</h2></div><div class="detail-actions"><button class="detail-share" data-recipe-id="${r.id}" aria-label="${r.title} teilen">↗</button><button class="detail-heart ${isSaved ? "is-saved" : ""}" data-id="${r.id}" aria-label="${r.title} speichern">${isSaved ? "♥" : "♡"}</button></div></div><p class="detail-description">${description}</p>${detailMetaHTML(r)}${tagsHTML}${ratingStarsHTML(r)}<div class="detail-grid"><section><h3>Zutaten <small>für ${r.servings || "1 Glas"}</small></h3><ul>${ingredients.map((ing, idx) => `<li class="check-item${checked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-check-idx="${idx}"${checked.includes(idx) ? " checked" : ""}><span>${ing}</span></label></li>`).join("")}</ul>${allergensHTML}</section><section><h3>Zubereitung <small class="step-progress">${stepsChecked.length}/${steps.length} Schritte</small></h3><ol>${steps.map((s, idx) => `<li class="step-item${stepsChecked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-step-idx="${idx}"${stepsChecked.includes(idx) ? " checked" : ""}><span>${s}</span></label></li>`).join("")}</ol></section></div>${similarHTML}<p class="allergy-note">${r.draft ? "Testentwurf: Mengen und Schritte vor der Veröffentlichung bitte selbst testen und gegebenenfalls anpassen." : "Hinweis: Prüfe bei pflanzlichen Drinks, Sirupen und Toppings immer die Zutatenliste, besonders bei Allergien."}</p></div>`;
 };
 const showCopyToast = () => {
   let toast = document.querySelector(".share-toast");

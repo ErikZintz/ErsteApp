@@ -1,11 +1,17 @@
-const completedCount=document.querySelector("#completedCount"),favoriteCount=document.querySelector("#favoriteCount"),streakCount=document.querySelector("#streakCount"),progressText=document.querySelector("#progressText"),progressFill=document.querySelector("#progressFill"),progressLabel=document.querySelector("#progressLabel");
+const completedCount=document.querySelector("#completedCount"),favoriteCount=document.querySelector("#favoriteCount"),streakCount=document.querySelector("#streakCount"),ratingCount=document.querySelector("#ratingCount"),ratingAvg=document.querySelector("#ratingAvg"),progressText=document.querySelector("#progressText"),progressFill=document.querySelector("#progressFill"),progressLabel=document.querySelector("#progressLabel");
 const favorites=savedRecipes();
 const completed=RECIPES.filter(r=>r.steps&&r.steps.length>0&&checkedSteps(r.id).length===r.steps.length);
 const total=RECIPES.length;
 const pct=total?Math.round(completed.length/total*100):0;
+const ratings=JSON.parse(localStorage.getItem("matchly-ratings")||"{}");
+const ratingIds=Object.keys(ratings);
+const ratingCountValue=ratingIds.length;
+const ratingAvgValue=ratingCountValue?ratingIds.reduce((s,id)=>s+Number(ratings[id]||0),0)/ratingCountValue:0;
 completedCount.textContent=completed.length;
 favoriteCount.textContent=favorites.length;
 streakCount.textContent=Number(localStorage.getItem("matchly-streak")||0);
+ratingCount.textContent=ratingCountValue;
+ratingAvg.textContent=ratingCountValue?(ratingAvgValue%1===0?ratingAvgValue:ratingAvgValue.toFixed(1)).replace(".",",")+" Ø Sterne":"Noch keine Bewertungen";
 progressFill.style.width=pct+"%";
 progressLabel.textContent=`${completed.length} von ${total} Rezepten abgeschlossen`;
 progressText.textContent=completed.length===0?"Dein erster abgeschlossener Matcha wartet schon – bereite einfach ein Rezept von Anfang bis Ende zu.":completed.length<5?`Stark! Du hast schon ${completed.length} Rezept${completed.length===1?"":"e"} abgeschlossen. Auf zum nächsten grünen Moment!`:completed.length<Math.ceil(total/2)?`Toll, ${completed.length} Rezepte sind abgeschlossen – deine Matcha-Reise nimmt richtig Fahrt auf.`:`Beeindruckend! ${completed.length} von ${total} Rezepten sind fertig – du bist ein echter Matcha-Profi.`;
