@@ -11,5 +11,6 @@ categorySearch.addEventListener("input",renderCategory);
 grid.addEventListener("click",e=>{const heart=e.target.closest(".heart");if(heart){saved=toggleSaved(Number(heart.dataset.id));renderCategory();return}const card=e.target.closest("[data-recipe-id]");if(card)openCategoryRecipe(Number(card.dataset.recipeId))});
 grid.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const card=e.target.closest("[data-recipe-id]");if(card){e.preventDefault();openCategoryRecipe(Number(card.dataset.recipeId))}}});
 document.querySelector("#closeCategoryRecipe").addEventListener("click",()=>modal.close());
+document.querySelector("#categoryRecipeDetail").addEventListener("click",e=>{const heart=e.target.closest(".detail-heart");if(heart){const id=Number(heart.dataset.id);saved=toggleSaved(id);heart.classList.toggle("is-saved",saved.includes(id));heart.textContent=saved.includes(id)?"♥":"♡";return}const similar=e.target.closest("[data-detail-open]");if(similar)openCategoryRecipe(Number(similar.dataset.detailOpen))});
 document.querySelector("#categoryRanking").innerHTML=categoryRecipes.slice(0,5).map((recipe,index)=>`<li><b>${index+1}</b><strong>${recipe.title}</strong><span>♡ ${(14-index*2)}${index===0?"2":"8"}</span></li>`).join("");
 renderCategory();
