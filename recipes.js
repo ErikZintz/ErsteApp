@@ -66,3 +66,23 @@ const draftSteps = (r, info) => {
     "Matcha langsam dazugeben, vorsichtig umrühren und direkt servieren."
   ];
 };
+const normalizeText = (s) => String(s == null ? "" : s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const searchRecipes = (list, query) => {
+  const terms = normalizeText(query).split(/\s+/).filter(Boolean);
+  if (!terms.length) return list;
+  return list.filter((r) => {
+    const haystack = normalizeText([r.title, r.note, r.category, deriveMeta(r).level, r.time, ...(r.tags || []), ...(r.ingredients || []), ...(r.steps || [])].join(" "));
+    return terms.every((t) => haystack.includes(t));
+  });
+};
+const savedRecipes = () => JSON.parse(localStorage.getItem("matchly-saved") || "[]");
+const toggleSaved = (id) => {
+  const list = savedRecipes();
+  const next = list.includes(id) ? list.filter((i) => i !== id) : [...list, id];
+  localStorage.setItem("matchly-saved", JSON.stringify(next));
+  return next;
+};
+const recipeDetailHTML = (r) => {
+  const meta = deriveMeta(r);
+  return `<div class="detail-hero ${r.color}"><span>${r.emoji}</span></div><p class="eyebrow">${r.category.toUpperCase()}${r.draft ? " · REZEPTENTWURF" : ""}</p><h2>${r.title}</h2><p class="detail-note">${r.note}</p>${infoPills(r)}${r.draft ? "" : `<div class="detail-tags">${r.tags.map((t) => `<span>${t}</span>`).join("")}</div>`}<div class="detail-grid"><section><h3>Zutaten <small>für 1 Glas</small></h3><ul>${(r.draft ? draftIngredients(r, meta) : r.ingredients).map((i) => `<li>${i}</li>`).join("")}</ul></section><section><h3>Zubereitung</h3><ol>${(r.draft ? draftSteps(r, meta) : r.steps).map((s) => `<li>${s}</li>`).join("")}</ol></section></div><p class="allergy-note">${r.draft ? "Testentwurf: Mengen und Schritte vor der Veröffentlichung bitte selbst testen und gegebenenfalls anpassen." : "Hinweis: Prüfe bei pflanzlichen Drinks, Sirupen und Toppings immer die Zutatenliste, besonders bei Allergien."}</p>`;
+};
