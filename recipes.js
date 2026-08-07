@@ -82,6 +82,14 @@ const toggleSaved = (id) => {
   localStorage.setItem("matchly-saved", JSON.stringify(next));
   return next;
 };
+const checkedIngredients = (id) => (JSON.parse(localStorage.getItem("matchly-checked") || "{}")[id] || []);
+const toggleChecked = (id, idx) => {
+  const all = JSON.parse(localStorage.getItem("matchly-checked") || "{}");
+  const list = all[id] || [];
+  all[id] = list.includes(idx) ? list.filter((i) => i !== idx) : [...list, idx];
+  localStorage.setItem("matchly-checked", JSON.stringify(all));
+  return all[id];
+};
 const similarRecipes = (r, n = 3) => RECIPES.filter((x) => x.category === r.category && x.id !== r.id).slice(0, n);
 const detailMetaHTML = (r) => {
   const meta = deriveMeta(r);
@@ -97,7 +105,8 @@ const recipeDetailHTML = (r) => {
   const similarHTML = similar.length ? `<section class="similar-recipes"><h3>Ähnliche Rezepte</h3><div class="similar-grid">${similar.map((s) => `<button class="similar-card ${s.color}" data-detail-open="${s.id}" aria-label="${s.title} öffnen"><span class="similar-emoji">${s.emoji}</span><strong>${s.title}</strong><small>◷ ${s.time} · ${s.category}</small></button>`).join("")}</div></section>` : "";
   const ingredients = r.draft ? draftIngredients(r, meta) : r.ingredients;
   const steps = r.draft ? draftSteps(r, meta) : r.steps;
-  return `<div class="detail-hero ${r.color}"><span>${r.emoji}</span></div><div class="detail-body"><div class="detail-top"><div><p class="eyebrow">${r.category.toUpperCase()}${r.draft ? " · REZEPTENTWURF" : ""}</p><h2>${r.title}</h2></div><div class="detail-actions"><button class="detail-share" data-share-id="${r.id}" aria-label="${r.title} teilen">↗</button><button class="detail-heart ${isSaved ? "is-saved" : ""}" data-id="${r.id}" aria-label="${r.title} speichern">${isSaved ? "♥" : "♡"}</button></div></div><p class="detail-description">${description}</p>${detailMetaHTML(r)}${tagsHTML}<div class="detail-grid"><section><h3>Zutaten <small>für ${r.servings || "1 Glas"}</small></h3><ul>${ingredients.map((i) => `<li>${i}</li>`).join("")}</ul>${allergensHTML}</section><section><h3>Zubereitung</h3><ol>${steps.map((s) => `<li>${s}</li>`).join("")}</ol></section></div>${similarHTML}<p class="allergy-note">${r.draft ? "Testentwurf: Mengen und Schritte vor der Veröffentlichung bitte selbst testen und gegebenenfalls anpassen." : "Hinweis: Prüfe bei pflanzlichen Drinks, Sirupen und Toppings immer die Zutatenliste, besonders bei Allergien."}</p></div>`;
+  const checked = checkedIngredients(r.id);
+  return `<div class="detail-hero ${r.color}"><span>${r.emoji}</span></div><div class="detail-body"><div class="detail-top"><div><p class="eyebrow">${r.category.toUpperCase()}${r.draft ? " · REZEPTENTWURF" : ""}</p><h2>${r.title}</h2></div><div class="detail-actions"><button class="detail-share" data-share-id="${r.id}" aria-label="${r.title} teilen">↗</button><button class="detail-heart ${isSaved ? "is-saved" : ""}" data-id="${r.id}" aria-label="${r.title} speichern">${isSaved ? "♥" : "♡"}</button></div></div><p class="detail-description">${description}</p>${detailMetaHTML(r)}${tagsHTML}<div class="detail-grid"><section><h3>Zutaten <small>für ${r.servings || "1 Glas"}</small></h3><ul>${ingredients.map((ing, idx) => `<li class="check-item${checked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-check-idx="${idx}"${checked.includes(idx) ? " checked" : ""}><span>${ing}</span></label></li>`).join("")}</ul>${allergensHTML}</section><section><h3>Zubereitung</h3><ol>${steps.map((s) => `<li>${s}</li>`).join("")}</ol></section></div>${similarHTML}<p class="allergy-note">${r.draft ? "Testentwurf: Mengen und Schritte vor der Veröffentlichung bitte selbst testen und gegebenenfalls anpassen." : "Hinweis: Prüfe bei pflanzlichen Drinks, Sirupen und Toppings immer die Zutatenliste, besonders bei Allergien."}</p></div>`;
 };
 const showCopyToast = () => {
   let toast = document.querySelector(".share-toast");
