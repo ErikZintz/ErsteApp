@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1d4336" />
+    <title>Favoriten — Matchly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:opsz,wght@5..1200,500;5..1200,600;5..1200,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="recipe.css?v=2" />
+    <link rel="stylesheet" href="ranking.css" />
+    <link rel="stylesheet" href="category.css" />
+    <link rel="stylesheet" href="category-ranking.css" />
+    <link rel="stylesheet" href="responsive.css" />
+    <link rel="stylesheet" href="recipe-meta.css" />
+    <link rel="stylesheet" href="dialog-layout.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Matchly Startseite"><span class="brand-mark">m</span>matchly</a>
+      <nav aria-label="Hauptnavigation"><a href="index.html">Rezepte</a><a href="category.html?category=Alle">Kategorien</a><a href="favorites.html" class="active">Favoriten</a></nav>
+    </header>
+
+    <main>
+      <section class="recipes-section" id="favoriten">
+        <div class="recipes-top"><div><p class="eyebrow">DEINE SAMMLUNG</p><h2>Gespeicherte Rezepte</h2></div></div>
+        <div class="recipe-grid" id="favoritesGrid"></div>
+        <p class="empty" id="favoritesEmptyState" hidden>Noch keine Rezepte gespeichert. Tippe auf das Herz, um Favoriten zu sammeln.</p>
+      </section>
+    </main>
+    <footer><a class="brand" href="index.html"><span class="brand-mark">m</span>matchly</a><span>© 2026 Matchly · made for slow moments</span></footer>
+    <dialog id="recipeDialog" class="recipe-dialog"><button class="close" id="closeRecipeDialog" aria-label="Schließen">×</button><div id="recipeDetail"></div></dialog>
+    <script src="recipes.js"></script>
+    <script src="favorites.js"></script>
+  </body>
+</html>
