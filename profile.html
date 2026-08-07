@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1d4336" />
+    <link rel="manifest" href="manifest.json" />
+    <title>Profil — Matchly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:opsz,wght@5..1200,500;5..1200,600;5..1200,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="profile.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Matchly Startseite"><span class="brand-mark">m</span>matchly</a>
+      <nav aria-label="Hauptnavigation"><a href="index.html">Rezepte</a><a href="category.html">Kategorien</a><a href="favorites.html">Favoriten ❤️</a><a href="profile.html" class="active">Profil</a><a href="index.html#ueber-uns">Über Matchly</a></nav>
+    </header>
+
+    <main class="profile-page">
+      <section class="profile-hero">
+        <p class="eyebrow">DEIN MATCHLY</p>
+        <h1>Dein Profil</h1>
+        <p class="profile-intro">Deine persönliche Matcha-Reise im Überblick – ganz ohne Anmeldung. Alles bleibt sicher in deinem Browser gespeichert.</p>
+        <div class="profile-hero-art" aria-hidden="true"><span class="prof-leaf"></span><span class="prof-cup">🍵</span><span class="prof-leaf prof-leaf-right"></span></div>
+      </section>
+      <section class="profile-section">
+        <div class="profile-top"><div><p class="eyebrow">DEIN FORTSCHRITT</p><h2>Deine Matchly-Reise</h2></div></div>
+        <div class="stat-grid">
+          <article class="stat-card"><span class="stat-icon">✓</span><strong id="completedCount">0</strong><small>Rezepte abgeschlossen</small></article>
+          <article class="stat-card"><span class="stat-icon">♡</span><strong id="favoriteCount">0</strong><small>Favoriten</small></article>
+          <article class="stat-card"><span class="stat-icon">🔥</span><strong id="streakCount">0</strong><small>Tage Streak</small></article>
+        </div>
+        <div class="progress-card">
+          <div class="progress-copy"><h3>Dein Fortschritt</h3><p id="progressText"></p></div>
+          <div class="progress-bar"><span id="progressFill"></span></div>
+          <small id="progressLabel"></small>
+        </div>
+        <div class="streak-note"><span class="streak-emoji">💬</span><span>Streak-Tracking kommt bald. Bis dahin zählst du jeden Matcha-Moment einfach selbst.</span></div>
+      </section>
+    </main>
+    <footer><a class="brand" href="index.html"><span class="brand-mark">m</span>matchly</a><span>© 2026 Matchly · made for slow moments</span></footer>
+    <nav class="bottom-nav" aria-label="Mobile Navigation"><a href="index.html">🏠<span>Rezepte</span></a><a href="category.html">🗂<span>Kategorien</span></a><a href="favorites.html">❤️<span>Favoriten</span></a><a href="profile.html" class="active">👤<span>Profil</span></a></nav>
+    <script src="recipes.js"></script>
+    <script src="profile.js"></script>
+    <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js"))}</script>
+  </body>
+</html>
