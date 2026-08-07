@@ -90,6 +90,14 @@ const toggleChecked = (id, idx) => {
   localStorage.setItem("matchly-checked", JSON.stringify(all));
   return all[id];
 };
+const checkedSteps = (id) => (JSON.parse(localStorage.getItem("matchly-steps") || "{}")[id] || []);
+const toggleStep = (id, idx) => {
+  const all = JSON.parse(localStorage.getItem("matchly-steps") || "{}");
+  const list = all[id] || [];
+  all[id] = list.includes(idx) ? list.filter((i) => i !== idx) : [...list, idx];
+  localStorage.setItem("matchly-steps", JSON.stringify(all));
+  return all[id];
+};
 const similarRecipes = (r, n = 3) => RECIPES.filter((x) => x.category === r.category && x.id !== r.id).slice(0, n);
 const detailMetaHTML = (r) => {
   const meta = deriveMeta(r);
@@ -106,7 +114,8 @@ const recipeDetailHTML = (r) => {
   const ingredients = r.draft ? draftIngredients(r, meta) : r.ingredients;
   const steps = r.draft ? draftSteps(r, meta) : r.steps;
   const checked = checkedIngredients(r.id);
-  return `<div class="detail-hero ${r.color}"><span>${r.emoji}</span></div><div class="detail-body"><div class="detail-top"><div><p class="eyebrow">${r.category.toUpperCase()}${r.draft ? " · REZEPTENTWURF" : ""}</p><h2>${r.title}</h2></div><div class="detail-actions"><button class="detail-share" data-share-id="${r.id}" aria-label="${r.title} teilen">↗</button><button class="detail-heart ${isSaved ? "is-saved" : ""}" data-id="${r.id}" aria-label="${r.title} speichern">${isSaved ? "♥" : "♡"}</button></div></div><p class="detail-description">${description}</p>${detailMetaHTML(r)}${tagsHTML}<div class="detail-grid"><section><h3>Zutaten <small>für ${r.servings || "1 Glas"}</small></h3><ul>${ingredients.map((ing, idx) => `<li class="check-item${checked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-check-idx="${idx}"${checked.includes(idx) ? " checked" : ""}><span>${ing}</span></label></li>`).join("")}</ul>${allergensHTML}</section><section><h3>Zubereitung</h3><ol>${steps.map((s) => `<li>${s}</li>`).join("")}</ol></section></div>${similarHTML}<p class="allergy-note">${r.draft ? "Testentwurf: Mengen und Schritte vor der Veröffentlichung bitte selbst testen und gegebenenfalls anpassen." : "Hinweis: Prüfe bei pflanzlichen Drinks, Sirupen und Toppings immer die Zutatenliste, besonders bei Allergien."}</p></div>`;
+  const stepsChecked = checkedSteps(r.id);
+  return `<div class="detail-hero ${r.color}"><span>${r.emoji}</span></div><div class="detail-body"><div class="detail-top"><div><p class="eyebrow">${r.category.toUpperCase()}${r.draft ? " · REZEPTENTWURF" : ""}</p><h2>${r.title}</h2></div><div class="detail-actions"><button class="detail-share" data-share-id="${r.id}" aria-label="${r.title} teilen">↗</button><button class="detail-heart ${isSaved ? "is-saved" : ""}" data-id="${r.id}" aria-label="${r.title} speichern">${isSaved ? "♥" : "♡"}</button></div></div><p class="detail-description">${description}</p>${detailMetaHTML(r)}${tagsHTML}<div class="detail-grid"><section><h3>Zutaten <small>für ${r.servings || "1 Glas"}</small></h3><ul>${ingredients.map((ing, idx) => `<li class="check-item${checked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-check-idx="${idx}"${checked.includes(idx) ? " checked" : ""}><span>${ing}</span></label></li>`).join("")}</ul>${allergensHTML}</section><section><h3>Zubereitung <small class="step-progress">${stepsChecked.length}/${steps.length} Schritte</small></h3><ol>${steps.map((s, idx) => `<li class="step-item${stepsChecked.includes(idx) ? " is-checked" : ""}"><label><input type="checkbox" data-recipe-id="${r.id}" data-step-idx="${idx}"${stepsChecked.includes(idx) ? " checked" : ""}><span>${s}</span></label></li>`).join("")}</ol></section></div>${similarHTML}<p class="allergy-note">${r.draft ? "Testentwurf: Mengen und Schritte vor der Veröffentlichung bitte selbst testen und gegebenenfalls anpassen." : "Hinweis: Prüfe bei pflanzlichen Drinks, Sirupen und Toppings immer die Zutatenliste, besonders bei Allergien."}</p></div>`;
 };
 const showCopyToast = () => {
   let toast = document.querySelector(".share-toast");
