@@ -1,6 +1,7 @@
 const category=new URLSearchParams(location.search).get("category")||"Alle";
-const info={Alle:["Alle Matchly-Rezepte","Entdecke alle kleinen Matcha-Momente an einem Ort."],Iced:["Iced & Fresh","Zehn eisgekühlte Matcha-Rezepte für sonnige Tage und frische Pausen."],Cremig:["Cremig & Sweet","Elf samtige Matcha-Kreationen für deinen gemütlichen Genussmoment."],Fruchtig:["Fruchtig","Zehn leichte, frische Matcha-Rezepte mit deinen Lieblingsfrüchten."],Wellness:["Wellness","Zehn bewusste Matcha-Momente, die einfach gut schmecken."]}[category]||["Rezepte","Matcha-Inspiration für dich."];
-document.title=`${info[0]} — Matchly`;document.querySelector("#categoryTitle").textContent=info[0];document.querySelector("#categoryIntro").textContent=info[1];
+const info={Alle:["Alle Rezepte","Entdecke alle kleinen Matcha-Momente an einem Ort."],Iced:["Iced & Fresh","Zehn eisgekühlte Matcha-Rezepte für sonnige Tage und frische Pausen."],Cremig:["Cremig & Sweet","Elf samtige Matcha-Kreationen für deinen gemütlichen Genussmoment."],Fruchtig:["Fruchtig","Zehn leichte, frische Matcha-Rezepte mit deinen Lieblingsfrüchten."],Wellness:["Wellness","Zehn bewusste Matcha-Momente, die einfach gut schmecken."]}[category]||["Alle Rezepte","Matcha-Inspiration für dich."];
+document.title=category==="Alle"?"Matchly Kategorien":`${info[0]} — Matchly`;document.querySelector("#categoryTitle").textContent=info[0];document.querySelector("#categoryIntro").textContent=info[1];
+for(const c of ["Alle","Iced","Cremig","Fruchtig","Wellness"]){document.querySelector(`#pill-${c}`).classList.toggle("active",c===category)}
 const categoryRecipes=category==="Alle"?RECIPES:RECIPES.filter(r=>r.category===category);
 let saved=savedRecipes();
 const grid=document.querySelector("#categoryRecipeGrid"),modal=document.querySelector("#categoryRecipeDialog"),categorySearch=document.querySelector("#categorySearch"),emptyEl=document.querySelector("#categoryEmptyState");
