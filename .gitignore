@@ -1,0 +1,27 @@
+# Abhängigkeiten
+node_modules/
+
+# Lokale Arbeits- und Aufbereitungsordner
+work/
+outputs/
+
+# Rezeptbilder werden erst unmittelbar vor der Veröffentlichung ergänzt
+images/recipes/
+
+# Windows
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# macOS
+.DS_Store
+
+# Editoren
+.vscode/
+.idea/
+
+# Temporäre und Log-Dateien
+*.tmp
+*.log
+npm-debug.log*
+*~
